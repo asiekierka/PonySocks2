@@ -8,14 +8,37 @@
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package pl.asie.ponysocks;
+package pl.asie.ponysocks.recipe.jei;
 
-public class CommonProxy {
-	public void preInit() {
+import mezz.jei.api.*;
+import mezz.jei.api.recipe.IStackHelper;
+import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import pl.asie.ponysocks.PonySocks;
+import pl.asie.ponysocks.recipe.RecipeBase;
 
+import java.util.Collections;
+
+@JEIPlugin
+public class PonySocksJEIPlugin implements IModPlugin {
+	public static IStackHelper STACKS;
+
+	@Override
+	public void registerItemSubtypes(ISubtypeRegistry subtypeRegistry) {
+		subtypeRegistry.useNbtForSubtypes(PonySocks.sock);
 	}
 
-	public void init() {
+	@Override
+	public void register(IModRegistry registry) {
+		STACKS = registry.getJeiHelpers().getStackHelper();
 
+		for (IRecipe recipe : ForgeRegistries.RECIPES) {
+			if (recipe instanceof RecipeBase) {
+				registry.addRecipes(Collections.singletonList(recipe), VanillaRecipeCategoryUid.CRAFTING);
+			}
+		}
+
+		registry.handleRecipes(RecipeBase.class, JEIRecipePony::create, VanillaRecipeCategoryUid.CRAFTING);
 	}
 }

@@ -1,0 +1,16 @@
+[
+{
+  "modid": "ponysocks",
+  "name": "PonySocks",
+  "description": "The horsiest fashion mod in all of Ponyville!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["asie"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

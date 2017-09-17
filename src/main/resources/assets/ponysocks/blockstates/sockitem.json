@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "variants": {
+    "inventory": {
+      "model": "forge:item-layer",
+      "transform": "forge:default-item",
+      "textures": {
+        "layer0": "ponysocks:items/icon_sock_layer_0",
+        "layer1": "ponysocks:items/icon_sock_layer_1",
+        "layer2": "ponysocks:items/icon_sock_overlay"
+      }
+    },
+    "inventory_rainbow": {
+      "model": "forge:item-layer",
+      "transform": "forge:default-item",
+      "textures": {
+        "layer0": "ponysocks:items/icon_sock_rainbow"
+      }
+    }
+  }
+}
