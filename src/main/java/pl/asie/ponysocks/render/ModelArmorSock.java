@@ -21,6 +21,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.Sys;
+import pl.asie.ponysocks.Constants;
 import pl.asie.ponysocks.PonySocks;
 
 public class ModelArmorSock extends ModelPonyArmor implements IStackedArmor {
@@ -34,7 +35,7 @@ public class ModelArmorSock extends ModelPonyArmor implements IStackedArmor {
 
 	public ModelArmorSock() {
 		super();
-		init(0.0F, 0.025F);
+		init(0.0F, Constants.SOCK_STRETCH);
 	}
 
 	public void setArmorStack(ItemStack stack) {

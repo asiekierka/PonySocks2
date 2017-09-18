@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import pl.asie.ponysocks.Constants;
 import pl.asie.ponysocks.PonySocks;
 
 public class ModelArmorSockBiped extends ModelBiped implements IStackedArmor {
@@ -28,7 +29,7 @@ public class ModelArmorSockBiped extends ModelBiped implements IStackedArmor {
 	private ItemStack stack;
 
 	public ModelArmorSockBiped() {
-		super(0.025F);
+		super(Constants.SOCK_STRETCH);
 	}
 
 	public void setArmorStack(ItemStack stack) {

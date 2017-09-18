@@ -37,7 +37,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import pl.asie.ponysocks.recipe.*;
 
-@Mod(modid = PonySocks.MODID, version = PonySocks.VERSION, acceptableRemoteVersions="*")
+@Mod(modid = PonySocks.MODID, version = PonySocks.VERSION, updateJSON = "http://asie.pl/files/minecraft/update/" + PonySocks.MODID + ".json")
 public class PonySocks {
 	public static CreativeTabs tabSocks = new CreativeTabs("tabPonySocks") {
 		@Override
