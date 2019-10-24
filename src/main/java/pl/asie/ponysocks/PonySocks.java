@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2017 Adrian Siekierka
+ * Copyright (C) 2015, 2017, 2019 Adrian Siekierka
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -37,11 +37,11 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.oredict.OreDictionary;
 import pl.asie.ponysocks.recipe.*;
 
-@Mod(modid = PonySocks.MODID, version = PonySocks.VERSION, updateJSON = "http://asie.pl/files/minecraft/update/" + PonySocks.MODID + ".json")
+@Mod(modid = PonySocks.MODID, version = PonySocks.VERSION, updateJSON = "https://asie.pl/files/minecraft/update/" + PonySocks.MODID + ".json")
 public class PonySocks {
 	public static CreativeTabs tabSocks = new CreativeTabs("tabPonySocks") {
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack createIcon() {
 			return new ItemStack(sock);
 		}
 	};
@@ -63,12 +63,16 @@ public class PonySocks {
 	private static void initSockLists() {
 		if (socksOrdered == null) {
 			socksOrdered = new ArrayList<>(256);
+			int[] colors = new int[16];
+			for (int i = 0; i < 16; i++) {
+				colors[i] = RecipeDyeableBase.fromFloats(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i)));
+			}
 
 			for (int i = 0; i < 256; i++) {
 				ItemStack sock = new ItemStack(PonySocks.sock, 1, 0);
 				sock.setTagCompound(new NBTTagCompound());
-				sock.getTagCompound().setInteger("color1", RecipeDyeableBase.fromFloats(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i & 15))));
-				sock.getTagCompound().setInteger("color2", RecipeDyeableBase.fromFloats(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i >> 4))));
+				sock.getTagCompound().setInteger("color1", colors[i & 15]);
+				sock.getTagCompound().setInteger("color2", colors[i >> 4]);
 				socksOrdered.add(sock);
 			}
 
@@ -89,8 +93,17 @@ public class PonySocks {
 
 	@EventHandler
     public void preInit(FMLPreInitializationEvent event) {
+		try {
+			if (Class.forName("com.minelittlepony.model.pony.armor.ModelPonyArmor") != null) {
+				throw new RuntimeException("PonySocks 2.2+ requires a newer version of MineLittlePony (>= 3.2.7). Please update!");
+			}
+		} catch (ClassNotFoundException e) {
+			// pass
+		}
+
     	MinecraftForge.EVENT_BUS.register(this);
     	MinecraftForge.EVENT_BUS.register(proxy);
+    	MinecraftForge.EVENT_BUS.register(new RecipeSockWashHandler());
 
 		sock = new ItemSock();
 		sock.setRegistryName(new ResourceLocation(MODID, "sockitem"));

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2017 Adrian Siekierka
+ * Copyright (C) 2015, 2017, 2019 Adrian Siekierka
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -12,15 +12,18 @@ package pl.asie.ponysocks.render;
 
 import net.minecraft.client.renderer.color.IItemColor;
 import net.minecraft.item.ItemStack;
+import pl.asie.ponysocks.ItemSock;
 import pl.asie.ponysocks.PonySocks;
 
 public class ItemSockColor implements IItemColor {
 	@Override
-	public int getColorFromItemstack(ItemStack stack, int pass) {
-		if (stack.getItem() == PonySocks.sock && PonySocks.sock.isColorable(stack)) {
-			return pass == 2 ? -1 : (0xFF000000 | PonySocks.sock.getColor(stack, pass == 1));
-		} else {
-			return -1;
+	public int colorMultiplier(ItemStack stack, int layer) {
+		if (stack.getItem() instanceof ItemSock) {
+			ItemSock sock = (ItemSock) stack.getItem();
+			if (sock.isColorable(stack)) {
+				return layer >= 2 ? -1 : (0xFF000000 | sock.getColor(stack, layer == 1));
+			}
 		}
+		return -1;
 	}
 }

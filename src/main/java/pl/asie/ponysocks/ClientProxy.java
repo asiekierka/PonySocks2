@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015, 2017 Adrian Siekierka
+ * Copyright (C) 2015, 2017, 2019 Adrian Siekierka
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
  *
@@ -42,12 +42,12 @@ public class ClientProxy extends CommonProxy {
 	public static ModelBiped getArmorModel(EntityLivingBase entity, ItemStack stack, EntityEquipmentSlot armorSlot, ModelBiped parentModel) {
 		ModelBiped targetModel = null;
 
-		if (modelArmorHuman == null) {
-			modelArmorHuman = new ModelArmorSockBiped();
-		}
-
 		if (!(parentModel.getClass().getName().startsWith("com.minelittlepony"))) {
 			if (armorSlot == EntityEquipmentSlot.FEET) {
+				if (modelArmorHuman == null) {
+					modelArmorHuman = new ModelArmorSockBiped();
+				}
+
 				targetModel = modelArmorHuman;
 			}
 		} else {
@@ -56,7 +56,7 @@ public class ClientProxy extends CommonProxy {
 					MethodHandle sockCreationHandle;
 
 					try {
-						Class.forName("com.minelittlepony.model.pony.armor.ModelPonyArmor");
+						Class.forName("com.minelittlepony.model.armour.ModelPonyArmor");
 
 						try {
 							sockCreationHandle = MethodHandles.lookup().unreflectConstructor(Class.forName("pl.asie.ponysocks.render.ModelArmorSock").getConstructor());
@@ -64,7 +64,7 @@ public class ClientProxy extends CommonProxy {
 							throw new RuntimeException(ee);
 						}
 					} catch (Exception e) {
-						PonySocks.LOGGER.info("MineLittlePony not detected!");
+						PonySocks.LOGGER.warn("WARNING: MineLittlePony not detected! Things might act strange if it is actually present");
 
 						try {
 							sockCreationHandle = MethodHandles.lookup().unreflectConstructor(Class.forName("pl.asie.ponysocks.render.ModelArmorSockBiped").getConstructor());
@@ -84,7 +84,9 @@ public class ClientProxy extends CommonProxy {
 			}
 		}
 
-		((IStackedArmor) targetModel).setArmorStack(stack);
+		if (targetModel != null) {
+			((IStackedArmor) targetModel).setArmorStack(stack);
+		}
 		return targetModel;
 	}
 

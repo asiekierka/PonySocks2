@@ -13,7 +13,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'net.minecrell.licenser'
 
-version = "2.1"
+version = "2.2"
 group = "pl.asie.ponysocks"
 archivesBaseName = "PonySocks"
 
@@ -34,16 +34,20 @@ dependencies {
 }
 
 minecraft {
-    version = "1.12.1-14.22.1.2484"
+    version = "1.12.2-14.23.5.2838"
     runDir = "run"
     
-    mappings = "snapshot_20170917"
+    mappings = "stable_39"
 }
 
 repositories {
     maven {
         name 'DVS1 Maven FS'
         url 'http://dvs1.progwml6.com/files/maven'
+    }
+    ivy {
+        name 'asie dependency mirror'
+        artifactPattern "http://asie.pl/javadeps/[module]-[revision](-[classifier]).[ext]"
     }
 }
 
@@ -65,7 +69,8 @@ license {
 }
 
 dependencies {
-    deobfCompile "mezz.jei:jei_1.12.1:4.7.8.95"
+    deobfCompile "mezz.jei:jei_1.12.2:4.15.0.291"
+    deobfCompile name: "mod-minelittlepony", version: "1.12.2.3.2.7-mc1.12.2-srg"
 }
 
 processResources {

@@ -1,0 +1,2 @@
+* Added support for washing socks in a Cauldron.
+* Updated JustEnoughItems and Mine Little Pony compatibility code.
