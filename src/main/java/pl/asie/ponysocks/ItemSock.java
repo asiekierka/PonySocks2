@@ -11,6 +11,7 @@
 package pl.asie.ponysocks;
 
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.SoundEvents;
@@ -20,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.common.util.EnumHelper;
@@ -30,6 +33,7 @@ import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandleProxies;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 public class ItemSock extends ItemArmor {
 	public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("sock", "ponysocks:sock", 4, new int[]{1, 1, 1, 1}, 5, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
@@ -38,6 +42,14 @@ public class ItemSock extends ItemArmor {
 		super(MATERIAL, 0, EntityEquipmentSlot.FEET);
 		setCreativeTab(PonySocks.tabSocks);
 		setTranslationKey("ponysocks.sock");
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
+		/* boolean isPlain =  (getColor(stack, false) & 0xFFFFFF) == (getColor(stack, true) & 0xFFFFFF);
+		tooltip.add(I18n.translateToLocal(isPlain ? "item.ponysocks.sock.desc.plain" : "item.ponysocks.sock.desc.striped")); */
 	}
 
 	@Override

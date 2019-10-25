@@ -64,7 +64,7 @@ public class ClientProxy extends CommonProxy {
 							throw new RuntimeException(ee);
 						}
 					} catch (Exception e) {
-						PonySocks.LOGGER.warn("WARNING: MineLittlePony not detected! Things might act strange if it is actually present");
+						PonySocks.LOGGER.error("Using an unsupported version of Mine Little Pony - sock rendering will not work correctly!", e);
 
 						try {
 							sockCreationHandle = MethodHandles.lookup().unreflectConstructor(Class.forName("pl.asie.ponysocks.render.ModelArmorSockBiped").getConstructor());

@@ -20,10 +20,13 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.DyeUtils;
 import net.minecraftforge.oredict.OreDictionary;
 import org.apache.commons.lang3.ArrayUtils;
 import pl.asie.ponysocks.ItemSock;
 import pl.asie.ponysocks.PonySocks;
+
+import java.util.Optional;
 
 public class RecipeSockPaint extends RecipeDyeableBase {
 	public RecipeSockPaint(ResourceLocation location, String group) {
@@ -36,28 +39,15 @@ public class RecipeSockPaint extends RecipeDyeableBase {
 
 	@Override
 	protected boolean hasColor(ItemStack stack) {
-		int[] ids = OreDictionary.getOreIDs(stack);
-		for (int id : ids) {
-			if (ArrayUtils.contains(PonySocks.dyeOreIds, id)) {
-				return true;
-			}
-		}
-
-		return false;
+		return DyeUtils.isDye(stack);
 	}
 
 	@Override
 	protected int getColor(ItemStack stack) {
-		int[] ids = OreDictionary.getOreIDs(stack);
-		for (int id : ids) {
-			for (int i = 0; i < 16; i++) {
-				if (id == PonySocks.dyeOreIds[i]) {
-					return fromFloats(EntitySheep.getDyeRgb(EnumDyeColor.byDyeDamage(i)));
-				}
-			}
-		}
-
-		throw new RuntimeException("Shouldn't happen!");
+		return fromFloats(DyeUtils.colorFromStack(stack)
+				.orElseThrow(() -> new RuntimeException("Shouldn't happen!"))
+				.getColorComponentValues()
+		);
 	}
 
 	@Override

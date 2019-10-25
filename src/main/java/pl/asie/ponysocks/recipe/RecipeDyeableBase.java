@@ -55,8 +55,8 @@ public abstract class RecipeDyeableBase extends RecipeBase {
 		List<Integer> dyeColorsLeft = new ArrayList<Integer>();
 		List<Integer> dyeColorsRight = new ArrayList<Integer>();
 		boolean found = false;
-		int sockX = crafting.getWidth() / 2;
-		int sockY = crafting.getHeight() / 2;
+		int sockX = -1;
+		int sockY = -1;
 		int fWidth = (int) Math.floor(Math.sqrt(crafting.getSizeInventory()));
 
 		int clOut = 0;
@@ -83,10 +83,20 @@ public abstract class RecipeDyeableBase extends RecipeBase {
 				int color = getColor(s);
 				int px = i % fWidth;
 				int py = i / fWidth;
-				if (px < sockX || (px == sockX && py < sockY)) {
-					dyeColorsLeft.add(color);
+				if (sockX >= 0 && sockY >= 0) {
+					if (px < sockX || (px == sockX && py < sockY)) {
+						dyeColorsLeft.add(color);
+					} else {
+						dyeColorsRight.add(color);
+					}
 				} else {
-					dyeColorsRight.add(color);
+					if (py < (crafting.getHeight() - 1) && !crafting.getStackInSlot(i + crafting.getWidth()).isEmpty()) {
+						// top wool
+						dyeColorsLeft.add(color);
+					} else {
+						// bottom wool
+						dyeColorsRight.add(color);
+					}
 				}
 				found = true;
 			}

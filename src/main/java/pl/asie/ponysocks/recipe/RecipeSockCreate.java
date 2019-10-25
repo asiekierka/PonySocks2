@@ -20,28 +20,33 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.DyeUtils;
 import pl.asie.ponysocks.PonySocks;
 
 public class RecipeSockCreate extends RecipeDyeableBase {
+	private final Item woolItem;
+
 	public RecipeSockCreate(ResourceLocation location, String group) {
 		super(location, group, true, 3, 2);
 
-		ingredients.add(Ingredient.fromItem(Item.getItemFromBlock(Blocks.WOOL)));
+		woolItem = Item.getItemFromBlock(Blocks.WOOL);
+
+		ingredients.add(Ingredient.fromItem(woolItem));
 		ingredients.add(Ingredient.EMPTY);
-		ingredients.add(Ingredient.fromItem(Item.getItemFromBlock(Blocks.WOOL)));
-		ingredients.add(Ingredient.fromItem(Item.getItemFromBlock(Blocks.WOOL)));
+		ingredients.add(Ingredient.fromItem(woolItem));
+		ingredients.add(Ingredient.fromItem(woolItem));
 		ingredients.add(Ingredient.EMPTY);
-		ingredients.add(Ingredient.fromItem(Item.getItemFromBlock(Blocks.WOOL)));
+		ingredients.add(Ingredient.fromItem(woolItem));
 	}
 
 	@Override
 	protected boolean hasColor(ItemStack stack) {
-		return stack.getItem() == Item.getItemFromBlock(Blocks.WOOL);
+		return stack.getItem() == woolItem;
 	}
 
 	@Override
 	protected int getColor(ItemStack stack) {
-		return fromFloats(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(stack.getMetadata())));
+		return fromFloats(EnumDyeColor.byMetadata(stack.getMetadata()).getColorComponentValues());
 	}
 
 	@Override

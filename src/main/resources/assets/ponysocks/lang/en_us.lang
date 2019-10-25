@@ -1,2 +1,4 @@
 item.ponysocks.sock.name=Socks
+item.ponysocks.sock.desc.plain=Plain
+item.ponysocks.sock.desc.striped=Striped
 itemGroup.tabPonySocks=PonySocks

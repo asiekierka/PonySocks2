@@ -1,0 +1,3 @@
+* Allow creating stripes in initial sock crafting recipe
+* [#1] Fix error when attempting to craft or paint socks in multiplayer
+* Minor codebase improvements

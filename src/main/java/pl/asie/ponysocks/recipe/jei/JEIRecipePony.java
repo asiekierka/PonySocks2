@@ -13,17 +13,26 @@ package pl.asie.ponysocks.recipe.jei;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.ingredients.VanillaTypes;
 import mezz.jei.api.recipe.IRecipeWrapper;
+import mezz.jei.api.recipe.wrapper.ICraftingRecipeWrapper;
 import mezz.jei.api.recipe.wrapper.IShapedCraftingRecipeWrapper;
+import net.minecraft.util.ResourceLocation;
 import pl.asie.ponysocks.recipe.RecipeBase;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 
 public abstract class JEIRecipePony implements IRecipeWrapper {
 	protected final RecipeBase recipe;
 
-	public static class Shapeless extends JEIRecipePony {
+	public static class Shapeless extends JEIRecipePony implements ICraftingRecipeWrapper {
 		public Shapeless(RecipeBase recipe) {
 			super(recipe);
+		}
+
+		@Nullable
+		@Override
+		public ResourceLocation getRegistryName() {
+			return recipe.getRegistryName();
 		}
 	}
 

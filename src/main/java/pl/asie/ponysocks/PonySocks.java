@@ -49,10 +49,8 @@ public class PonySocks {
     @SidedProxy(clientSide = "pl.asie.ponysocks.ClientProxy", serverSide = "pl.asie.ponysocks.CommonProxy")
     public static CommonProxy proxy;
 
-	public static final int[] dyeOreIds = new int[16];
-
     public static final String MODID = "ponysocks";
-    public static final String VERSION = "2.0";
+    public static final String VERSION = "@VERSION@";
 	public static final Logger LOGGER = LogManager.getLogger("ponysocks");
 
 	public static ItemSock sock;
@@ -60,34 +58,33 @@ public class PonySocks {
 	private static List<ItemStack> socksOrdered;
 	private static List<ItemStack> socksShuffled;
 
-	private static void initSockLists() {
+	public static List<ItemStack> getSocksOrdered() {
 		if (socksOrdered == null) {
 			socksOrdered = new ArrayList<>(256);
 			int[] colors = new int[16];
 			for (int i = 0; i < 16; i++) {
-				colors[i] = RecipeDyeableBase.fromFloats(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(i)));
+				colors[i] = RecipeDyeableBase.fromFloats(EnumDyeColor.byMetadata(i).getColorComponentValues());
 			}
 
 			for (int i = 0; i < 256; i++) {
 				ItemStack sock = new ItemStack(PonySocks.sock, 1, 0);
-				sock.setTagCompound(new NBTTagCompound());
-				sock.getTagCompound().setInteger("color1", colors[i & 15]);
-				sock.getTagCompound().setInteger("color2", colors[i >> 4]);
+				NBTTagCompound sockCompound = new NBTTagCompound();
+				sockCompound.setInteger("color1", colors[i & 15]);
+				sockCompound.setInteger("color2", colors[i >> 4]);
+				sock.setTagCompound(sockCompound);
 				socksOrdered.add(sock);
 			}
-
-			socksShuffled = Lists.newArrayList(socksOrdered);
-			Collections.shuffle(socksShuffled);
 		}
-	}
 
-	public static List<ItemStack> getSocksOrdered() {
-		initSockLists();
 		return socksOrdered;
 	}
 
 	public static List<ItemStack> getSocksShuffled() {
-		initSockLists();
+		if (socksShuffled == null) {
+			socksShuffled = Lists.newArrayList(getSocksOrdered());
+			Collections.shuffle(socksShuffled);
+		}
+
 		return socksShuffled;
 	}
 
@@ -136,31 +133,5 @@ public class PonySocks {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
-		String[] dyes =
-				{
-						"Black",
-						"Red",
-						"Green",
-						"Brown",
-						"Blue",
-						"Purple",
-						"Cyan",
-						"LightGray",
-						"Gray",
-						"Pink",
-						"Lime",
-						"Yellow",
-						"LightBlue",
-						"Magenta",
-						"Orange",
-						"White"
-				};
-
-		for (int i = 0; i < 16; i++) {
-			dyeOreIds[i] = OreDictionary.getOreID("dye" + dyes[15 - i]);
-		}
-
-		/* GameRegistry.addShapedRecipe(new ItemStack(sock), "w w", "w w", 'w', Blocks.wool);
-		GameRegistry.addRecipe(new RecipeSockColor()); */
     }
 }
